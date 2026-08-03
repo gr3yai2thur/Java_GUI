@@ -24,7 +24,6 @@ public class cal extends JFrame implements ActionListener{
 
         calcu.add(tfA);
         calcu.add(tfB);
-        calcu.add(tfResult);
 
         btnAdd = new Button("+");
         btnSub = new Button("-");
@@ -65,7 +64,15 @@ public class cal extends JFrame implements ActionListener{
         else if (e.getSource() == btnMul) result = a * b;
         else if (e.getSource() == btnDiv) result = a / b;
 
+        JFrame popup = new JFrame();
+        popup.setTitle("Result");
+        popup.setSize(400, 300);
+        popup.setLayout(new FlowLayout());
+        popup.add(new Label("resule: "));
         tfResult.setText(String.valueOf(result));
+        popup.add(tfResult);
+
+        popup.setVisible(true);
     }
 
     // public void calculate(char op) {
