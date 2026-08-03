@@ -28,7 +28,7 @@ public class pm25 extends JFrame {
 
     public void readFile(JPanel table) {
         try (BufferedReader bfr = new BufferedReader(
-                new FileReader("C:\\Java_GUI\\src\\AWT\\PM2_5\\pm2.5_69.txt"))) {
+                new FileReader("C:\\Java_GUI\\src\\PM2_5\\pm2.5_69.txt"))) {
 
             String line;
             while ((line = bfr.readLine()) != null) {
