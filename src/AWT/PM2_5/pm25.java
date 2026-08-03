@@ -1,30 +1,81 @@
 package PM2_5;
 
 import java.awt.*;
+import javax.swing.*;
 import java.io.*;
-import java.util.Random;
 
-public class pm25 extends Frame {
-    pm25(){
+public class pm25 extends JFrame {
+    pm25() {
+        installComponents();
+    }
+
+    public void installComponents() {
         setTitle("PM2.5 Work");
         setSize(1600, 900);
-        setLayout(new GridLayout(40, 20));
+        setLayout(new BorderLayout());
 
-        Random rnd = new Random();
-        for(int i=1; i<=20; i++){
-            for(int j=1; j<=40; j++){
-                int x = rnd.nextInt(250);
-                Button btn = new Button();
-        
-                if(x <= 50)       btn.setBackground(Color.GREEN);
-                else if(x <= 100) btn.setBackground(Color.YELLOW);
-                else if(x <= 150) btn.setBackground(Color.ORANGE);
-                else              btn.setBackground(Color.RED);
-        
-                add(btn);
-            }
-        }
+        JPanel table = new JPanel(new GridLayout(20, 40));
+        JPanel data = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 30));
+        data.setPreferredSize(new Dimension(200, 900));
+        readFile(table);
+        userInterface(data);
+        add(table, BorderLayout.CENTER);
+        add(data, BorderLayout.WEST);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public void readFile(JPanel table) {
+        try (BufferedReader bfr = new BufferedReader(
+                new FileReader("C:\\Java_GUI\\src\\AWT\\PM2_5\\pm2.5_69.txt"))) {
+
+            String line;
+            while ((line = bfr.readLine()) != null) {
+                String[] tokens = parseLine(line);
+                setColor(tokens, table);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String[] parseLine(String line) {
+        return line.trim().split("\\s+");
+    }
+
+    public void setColor(String[] msg, JPanel table) {
+        for (String value : msg) {
+            JButton btn = createTableButton(value);
+            table.add(btn);
+        }
+    }
+
+    public JButton createTableButton(String value) {
+        int x = Integer.parseInt(value);
+        JButton btn = new JButton(value);
+        btn.setBackground(getColorByValue(x));
+        btn.setMargin(new Insets(0, 0, 0, 0));
+
+        return btn;
+    }
+
+    public Color getColorByValue(int x) {
+        if (x <= 50)       return Color.GREEN;
+        else if (x <= 100) return Color.YELLOW;
+        else if (x <= 150) return Color.ORANGE;
+        else               return Color.RED;
+    }
+
+    public void userInterface(JPanel data){
+        JButton people = new JButton("Sum People");
+        JButton pseudoRain = new JButton("Pseudo Rain");
+
+        people.setSize(200, 100);
+        data.add(people);
+        pseudoRain.setSize(200, 100);
+        data.add(pseudoRain);
     }
 
     public static void main(String[] args) {
